@@ -1,0 +1,47 @@
+// 全局配置文件，可以配置页面文件路径、窗口样式、原生的导航栏、底部tab栏等
+{
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "问答",
+                "app-plus": {
+                    "titleNView": false, //禁用原生导航栏
+                    "scrollIndicator": "none" //当前页面不显示滚动条
+                },
+                "scrollIndicator": "none"
+            }
+        }, {
+            "path": "pages/mine/mine",
+            "style": {
+                "navigationBarTitleText": "个人中心"
+            }
+        }
+    ],
+    "globalStyle": {
+        // 导航栏样式，仅支持 default/custom。custom即取消默认的原生导航栏
+        "navigationStyle": "default",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": " ",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "tabBar": {
+        "color": "#7A7E83",
+        "selectedColor": "#3cc51f",
+        "borderStyle": "black",
+        "backgroundColor": "#ffffff",
+        "position": "bottom",
+        "list": [{
+            "pagePath": "pages/index/index",
+            "iconPath": "static/logo.png",
+            "selectedIconPath": "static/mine-sel.png",
+            "text": "组件"
+        }, {
+            "pagePath": "pages/mine/mine",
+            "iconPath": "static/mine.png",
+            "selectedIconPath": "static/mine-sel.png",
+            "text": "个人中心"
+        }]
+    }
+}
