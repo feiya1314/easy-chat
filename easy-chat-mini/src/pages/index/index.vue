@@ -22,7 +22,7 @@
     </view>
 </template>
 <script setup lang="ts">
-    import { ref, computed, reactive } from 'vue'
+    import { ref, computed, onMounted, reactive } from 'vue'
     import { store } from '../../store/store'
     import { MessageEntity } from '../../store/message-entity.js'
     import Message from '@/components/Message'
@@ -33,7 +33,7 @@
 
     import logo from '@/static/logo.png'
 
-    const title = ref('æˆ‘çš„')
+    const title = ref('ÎÒµÄ')
     const currentUser = computed(() => store.state.curUser)
     const curChat = computed(() => store.state.curChat)
     const list = computed(() => {
@@ -50,18 +50,82 @@
 
     const msgListRef = ref<any>();
 
+    let inputHCache = 0
+    let knOnListHCache = 0
+    let knOffListHCache = 0
+
+    onMounted(() => {
+        let listInitH = 0
+        let inputH = uni.createSelectorQuery().select(".msg-input");
+        inputH.boundingClientRect(data => {
+            //¼ÆËã¸ß¶È£ºÔªËØ¸ß¶È=´°¿Ú¸ß¶È-ÔªËØ¾àÀë¶¥²¿µÄ¾àÀë£¨data.top£©
+            inputHCache = data.height
+            listInitH = data.top
+            knOffListHCache = data.top + 5
+            console.log("onMounted inputTop " + knOffListHCache)
+            console.log("onMounted inputheight " + inputHCache)
+            msgListRef.value.scrollToEnd(knOffListHCache)
+        }).exec()
+    })
     const hasNewMsg = () => {
         console.log("hasNewMsg income")
-        msgListRef.value.scrollToEnd()
+        // let inputH = uni.createSelectorQuery().select(".msg-input");
+        // inputH.boundingClientRect(data => {
+        //     //¼ÆËã¸ß¶È£ºÔªËØ¸ß¶È=´°¿Ú¸ß¶È-ÔªËØ¾àÀë¶¥²¿µÄ¾àÀë£¨data.top£©
+        //     let inputTop = data.top
+        //     let inputheight = data.height
+        //     console.log("inputTop " + inputTop)
+        //     console.log("inputheight " + inputheight)
+        // }).exec()
+        msgListRef.value.scrollToEnd(knOnListHCache)
     }
-    const kbHeightChange = (kbHeight : number) => {
-        console.log("kbHeightChange kbHeight " + kbHeight)
-        if (kbHeight > 0) {
+    const kbHeightChange = (openKb : boolean, kbHeight : number) => {
+        console.log("kbHeightChange openKb " + openKb + " kbHeight " + kbHeight)
+        if (openKb && kbHeight > 0) {
             kbHeightForMove.value = "" + kbHeight + "px"
         }
 
-        inputMove.value = kbHeight > 0 ? "" : "input-down"
-        inputPaddingEnd.value = "" + kbHeight + "px"
+        // ´ò¿ªÈí¼üÅÌ£¬ÊäÈë¿òÉÏÉý£¬¹Ø±ÕÈí¼üÅÌ£¬ÊäÈë¿òÏÂÒÆµ½µ×²¿
+        inputMove.value = openKb ? "" : "input-down"
+        let inputPaddingH = openKb ? kbHeight : 0;
+        inputPaddingEnd.value = "" + inputPaddingH + "px"
+
+        if (openKb && knOnListHCache > 0) {
+            console.log("openKb and use knOnListHCache " + knOnListHCache)
+            msgListRef.value.scrollToEnd(knOnListHCache, true)
+            return
+        }
+
+        if (!openKb && knOffListHCache > 0) {
+            console.log("openKb off and use knOffListHCache " + knOffListHCache)
+            msgListRef.value.scrollToEnd(knOffListHCache)
+            return
+        }
+
+        if (openKb && knOnListHCache == 0) {
+            let inputH = uni.createSelectorQuery().select(".msg-input");
+            inputH.boundingClientRect(data => {
+                //¼ÆËã¸ß¶È£ºÔªËØ¸ß¶È=´°¿Ú¸ß¶È-ÔªËØ¾àÀë¶¥²¿µÄ¾àÀë£¨data.top£©
+                let inputTop = data.top
+                //inputHCache = data.height
+                knOnListHCache = inputTop - kbHeight - 5
+                console.log("inputTop " + inputTop)
+                console.log("inputheight " + inputHCache)
+                msgListRef.value.scrollToEnd(knOnListHCache)
+            }).exec()
+        }
+        if (!openKb && knOffListHCache == 0) {
+            let inputH = uni.createSelectorQuery().select(".msg-input");
+            inputH.boundingClientRect(data => {
+                //¼ÆËã¸ß¶È£ºÔªËØ¸ß¶È=´°¿Ú¸ß¶È-ÔªËØ¾àÀë¶¥²¿µÄ¾àÀë£¨data.top£©
+                let inputTop = data.top
+                // inputHCache = data.height
+                knOffListHCache = inputTop + kbHeight
+                console.log("inputTop " + inputTop)
+                console.log("inputheight " + inputHCache)
+            }).exec()
+            msgListRef.value.scrollToEnd(knOffListHCache)
+        }
     }
 </script>
 <style>
@@ -100,7 +164,7 @@
         }
     }
 
-    /* Safari ä¸Ž Chrome */
+    /* Safari Chrome */
     @-webkit-keyframes kbDown {
         from {
             padding-bottom: v-bind(kbHeightForMove);

@@ -9,7 +9,7 @@
         <view class="input-view">
             <textarea hold-keyboard=true class="input-box" :adjust-position="adjustPos" fixed=true @linechange="changInputLines"
                 :auto-height=autoHeight trim=true maxlength=-1 v-model="input" @keyboardheightchange="kbChange" :show-confirm-bar=confirmBar
-                placeholder="请输入问题" @focus="inputFocus" @blur="inputBlur" />
+                placeholder="请输入问题" @blur="inputBlur" />
         </view>
         <view class="send-btn-view">
             <button class="send-btn" @click="sendMsg()" type="default" size="mini">发送</button>
@@ -79,7 +79,6 @@
     }
 
     let kbHeight = 0
-
     // const inputFocus = (e) => {
     //     console.log("input focus " + e.detail.height)
     //     if (kbHeight > 0) {
@@ -88,10 +87,10 @@
     //         return
     //     }
     // }
-    // const inputBlur = (e) => {
-    //     console.log("input blur " + e.detail.height)
-    //     emit('kb-height', 0)
-    // }
+    const inputBlur = (e) => {
+        console.log("input blur " + e.detail.height)
+        emit('kb-height', false, kbHeight)
+    }
 
     //键盘高度发生变化的时候触发此事件，event.detail = {height: height, duration: duration}
     // todo 键盘高度变化时，msg list 执行padding调整位置
@@ -99,13 +98,13 @@
         console.log("键盘高度发生变化 " + e.detail.height)
         if (e.detail.height == 0) {
             console.log("键盘隐藏 " + e.detail.height)
-            emit('kb-height', 0)
+            //emit('kb-height', 0)
             return
         }
 
         if (kbHeight > 0) {
             console.log("键盘高度缓存 " + kbHeight)
-            emit('kb-height', kbHeight)
+            emit('kb-height', true, kbHeight)
             return
         }
         let sysInfo = uni.getSystemInfoSync()
@@ -114,16 +113,21 @@
         const custom = uni.getMenuButtonBoundingClientRect()
 
         console.log("custom.top " + custom.top)
+        console.log("custom.right " + custom.right)
+        console.log("custom.bottom " + custom.bottom)
         console.log("custom.height " + custom.height)
         // 导航栏高度(标题栏高度) = 胶囊高度 + (顶部距离 - 状态栏高度) * 2
         let navigationBarHeight = custom.height + (custom.top - sysInfo.statusBarHeight) * 2
-
+        console.log("navigationBarHeight " + navigationBarHeight)
         // 总体高度 = 状态栏高度 + 导航栏高度
         let navHeight = navigationBarHeight + sysInfo.statusBarHeight
         // #endif
 
         console.log("navHeight " + navHeight)
         console.log("screenHeight " + sysInfo.screenHeight)
+        console.log("windowTop " + sysInfo.windowTop)
+        console.log("windowBottom " + sysInfo.windowBottom)
+        console.log("screenWidth " + sysInfo.screenWidth)
         console.log("windowHeight " + sysInfo.windowHeight)
         console.log("statusBarHeight " + sysInfo.statusBarHeight)
 
@@ -132,7 +136,7 @@
 
         console.log("键盘高度真实 " + kbHeight)
         //  kbHeight.value = e.detail.height
-        emit('kb-height', kbHeight)
+        emit('kb-height', true, kbHeight)
     }
 </script>
 <style lang="scss" scoped>

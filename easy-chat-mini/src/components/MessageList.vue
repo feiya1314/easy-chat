@@ -1,5 +1,5 @@
 <template>
-    <scroll-view :show-scrollbar="showScrollbar" class="message-group-box" ref="refScrollbar" scroll-y="false" @scroll="scrollHandle">
+    <scroll-view :show-scrollbar="showScrollbar" class="message-group-box" scroll-with-animation="true" :scroll-top="scrollEnd" scroll-y=true>
         <div ref="refInner">
             <!-- <el-icon v-show="loading"> -->
             <!--   <el-icon class="is-loading">
@@ -28,12 +28,31 @@
         }
     });
 
-    const scrollToEnd = () => {
-        console.log('scrollToEnd msg')
+    const scrollHeight = ref("800px")
+    const scrollEnd = ref(999999)
+    const scrollToEnd = (listHight : number, delay : boolean = false) => {
+        console.log('scrollToEnd listHight' + listHight)
+        // if (scrollEnd.value == 9999999999) {
+        //     scrollEnd.value = 9999999998
+        //     return
+        // }
+        // scrollEnd.value = 9999999999
+        scrollHeight.value = "" + listHight + "px"
+        if (delay) {
+            setTimeout(() => {
+                scrollEnd.value = scrollEnd.value + 1
+            }, 50)
+        } else {
+            scrollEnd.value = scrollEnd.value + 1
+        }
+    }
+    const kbChange = () => {
+        console.log('kbChange height')
+
     }
 
     defineExpose({
-        scrollToEnd
+        scrollToEnd, kbChange
     })
 
     const loading = ref(false)
@@ -55,6 +74,8 @@
 
     .message-group-box {
         width: 100%;
+        // min-height: 200px;
+        height: v-bind(scrollHeight);
         padding: 0 0;
     }
 
