@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth-store', {
 
   getters: {
     isChatGPTAPI(state): boolean {
+      // state.session 后面一层读不到的话就会返回一个 undefined，然后隐式转换为 false ，而不是报错。双问号表达式 ??" 左边的表达式为 null 或者 undefined 的时候，返回表达式右边的值
       return state.session?.model === 'ChatGPTAPI'
     },
   },

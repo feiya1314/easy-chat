@@ -480,13 +480,15 @@ onUnmounted(() => {
           class="w-full max-w-screen-xl m-auto dark:bg-[#101014]"
           :class="[isMobile ? 'p-2' : 'p-4']"
         >
-        <!-- template不会渲染成元素，用div的话会被渲染成元素 把if,show,for等语句抽取出来放在template上面，
+          <!-- template不会渲染成元素，用div的话会被渲染成元素 把if,show,for等语句抽取出来放在template上面，
           把绑定的事件放在temlpate里面的元素上，可以使html结构更加清晰，改善一个标签过长的情况 -->
           <template v-if="!dataSources.length">
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
               <div class="flex flex-col items-center text-sm h-full">
                 <div class="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
-                  <h1 class="text-4xl font-semibold mt-[20vh] ml-auto mr-auto mb-16">{{ $t('chat.startChatTip') }}</h1>
+                  <h1 class="text-4xl font-semibold mt-[20vh] ml-auto mr-auto mb-16">
+                    {{ $t('chat.startChatTip') }}
+                  </h1>
                 </div>
               </div>
             </div>

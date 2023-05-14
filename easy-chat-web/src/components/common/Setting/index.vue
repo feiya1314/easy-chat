@@ -2,9 +2,9 @@
 import { computed, ref } from 'vue'
 import { NModal, NTabPane, NTabs } from 'naive-ui'
 import General from './General.vue'
-import Advanced from './Advanced.vue'
-import About from './About.vue'
-import { useAuthStore } from '@/store'
+// import Advanced from './Advanced.vue'
+// import About from './About.vue'
+// import { useAuthStore } from '@/store'
 import { SvgIcon } from '@/components/common'
 
 interface Props {
@@ -19,9 +19,10 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<Emit>()
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
 
-const isChatGPTAPI = computed<boolean>(() => !!authStore.isChatGPTAPI)
+// !!一般用来将后面的表达式强制转换为布尔类型的数据（boolean），也就是只能是true或者false  （null/undifined/0/""/NaN 都是false）
+// const isChatGPTAPI = computed<boolean>(() => !!authStore.isChatGPTAPI)
 
 const active = ref('General')
 
@@ -48,7 +49,7 @@ const show = computed({
             <General />
           </div>
         </NTabPane>
-        <NTabPane v-if="isChatGPTAPI" name="Advanced" tab="Advanced">
+        <!-- <NTabPane v-if="isChatGPTAPI" name="Advanced" tab="Advanced">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:equalizer-line" />
             <span class="ml-2">{{ $t('setting.advanced') }}</span>
@@ -56,14 +57,14 @@ const show = computed({
           <div class="min-h-[100px]">
             <Advanced />
           </div>
-        </NTabPane>
-        <NTabPane name="Config" tab="Config">
+        </NTabPane> -->
+        <!-- <NTabPane name="Config" tab="Config">
           <template #tab>
             <SvgIcon class="text-lg" icon="ri:list-settings-line" />
             <span class="ml-2">{{ $t('setting.config') }}</span>
           </template>
           <About />
-        </NTabPane>
+        </NTabPane> -->
       </NTabs>
     </div>
   </NModal>

@@ -2,6 +2,7 @@
 import { defineAsyncComponent, ref } from 'vue'
 import { HoverButton, SvgIcon, UserAvatar } from '@/components/common'
 
+// 异步加载settings组件 仅在需要时再从服务器加载相关组件
 const Setting = defineAsyncComponent(() => import('@/components/common/Setting/index.vue'))
 
 const show = ref(false)
