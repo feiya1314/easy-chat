@@ -69,6 +69,7 @@ async function onConversation() {
 
   controller = new AbortController()
 
+  // 生成用户的问题对话气泡，写入localstorage
   addChat(
     +uuid,
     {
@@ -91,6 +92,7 @@ async function onConversation() {
   if (lastContext && usingContext.value)
     options = { ...lastContext }
 
+  // 生成AI 回答对话气泡，写入localstorage，此时还没结果，text只是空白的，需要后续请求返回值更新
   addChat(
     +uuid,
     {
@@ -111,11 +113,13 @@ async function onConversation() {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
         options,
+        // 用于取消请求的信号
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
           const xhr = event.target
           const { responseText } = xhr
           // Always process the final line
+          // 从响应中获取到完整的文本数据,只取最后一行的
           const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
           let chunk = responseText
           if (lastIndex !== -1)
@@ -140,6 +144,7 @@ async function onConversation() {
               options.parentMessageId = data.id
               lastText = data.text
               message = ''
+              // 递归调用 fetchChatAPIOnce 函数，获取更多的数据
               return fetchChatAPIOnce()
             }
 
