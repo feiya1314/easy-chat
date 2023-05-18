@@ -8,6 +8,13 @@ interface SessionResponse {
   model: 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI'
 }
 
+function getDefaultSession(): SessionResponse {
+  return {
+    auth: false,
+    model: 'ChatGPTAPI',
+  }
+}
+
 export interface AuthState {
   token: string | undefined
   session: SessionResponse | null
@@ -16,7 +23,7 @@ export interface AuthState {
 export const useAuthStore = defineStore('auth-store', {
   state: (): AuthState => ({
     token: getToken(),
-    session: null,
+    session: getDefaultSession(),
   }),
 
   getters: {
