@@ -12,6 +12,7 @@ const appStore = useAppStore()
 const chatStore = useChatStore()
 const authStore = useAuthStore()
 
+// 路由跳转,不会在路由栈中添加记录,跳转到 Chat子路由,且参数是 uuid
 router.replace({ name: 'Chat', params: { uuid: chatStore.active } })
 
 const { isMobile } = useBasicLayout()

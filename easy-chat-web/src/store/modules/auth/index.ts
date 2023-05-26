@@ -10,7 +10,7 @@ interface SessionResponse {
 
 function getDefaultSession(): SessionResponse {
   return {
-    auth: false,
+    auth: true,
     model: 'ChatGPTAPI',
   }
 }
@@ -22,7 +22,10 @@ export interface AuthState {
 
 export const useAuthStore = defineStore('auth-store', {
   state: (): AuthState => ({
-    token: getToken(),
+    // token: getToken(),
+    // 这里默认通过，给个默认值
+    token: 'pass',
+    // 这里先使用默认session，默认通过，不校验session
     session: getDefaultSession(),
   }),
 
