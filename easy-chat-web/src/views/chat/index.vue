@@ -37,6 +37,8 @@ const { uuid } = route.params as { uuid: string }
 
 // 从localstorage 的chat 对话信息中，找到uuid下的对话列表
 const dataSources = computed(() => chatStore.getChatByUuid(+uuid))
+
+// 找到 ai 回答的消息列表 inversion为fasle 且conversationOptions不为空
 const conversationList = computed(() => dataSources.value.filter(item => (!item.inversion && !!item.conversationOptions)))
 
 const prompt = ref<string>('')
@@ -88,6 +90,7 @@ async function onConversation() {
   prompt.value = ''
 
   let options: Chat.ConversationRequest = {}
+  // 最后一个ai回答的消息的 conversationOptions （conversationId 和 parentMessageId）
   const lastContext = conversationList.value[conversationList.value.length - 1]?.conversationOptions
 
   if (lastContext && usingContext.value)
@@ -136,6 +139,7 @@ async function onConversation() {
                 inversion: false,
                 error: false,
                 loading: true,
+                // 更新本次 ai 回答的 context，下一次请求会用（如果开启使用context）
                 conversationOptions: { conversationId: data.conversationId, parentMessageId: data.id },
                 requestOptions: { prompt: message, options: { ...options } },
               },

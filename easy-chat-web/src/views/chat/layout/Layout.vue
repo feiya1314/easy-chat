@@ -13,6 +13,7 @@ const chatStore = useChatStore()
 const authStore = useAuthStore()
 
 // 路由跳转,不会在路由栈中添加记录,跳转到 Chat子路由,且参数是 uuid
+// 最开始默认的 活跃的uuid 是用户id，后面新增时 uuid 是时间戳，一个聊天对应一个uuid
 router.replace({ name: 'Chat', params: { uuid: chatStore.active } })
 
 const { isMobile } = useBasicLayout()
