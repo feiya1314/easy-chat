@@ -167,7 +167,6 @@ async function onConversation() {
   }
   catch (error: any) {
     const errorMessage = error?.message ?? t('common.wrong')
-
     if (error.message === 'canceled') {
       updateChatSome(
         +uuid,
@@ -180,6 +179,9 @@ async function onConversation() {
       return
     }
 
+    const errorMsg = error?.cause?.data?.errorMsg ?? t('common.wrong')
+    // const errorMessage = error?.message ?? t('common.wrong')
+    ms.error(errorMsg)
     const currentChat = getChatByUuidAndIndex(+uuid, dataSources.value.length - 1)
 
     if (currentChat?.text && currentChat.text !== '') {
@@ -305,8 +307,9 @@ async function onRegenerate(index: number) {
       return
     }
 
-    const errorMessage = error?.message ?? t('common.wrong')
-
+    const errorMessage = error?.cause?.data?.errorMsg ?? t('common.wrong')
+    // const errorMessage = error?.message ?? t('common.wrong')
+    ms.error(errorMessage)
     updateChat(
       +uuid,
       index,

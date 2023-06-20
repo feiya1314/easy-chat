@@ -38,7 +38,7 @@ const getContainerClass = computed(() => {
 
 <template>
   <div class="h-full dark:bg-[#24272e] transition-all" :class="[isMobile ? 'p-0' : 'p-4']">
-    <div class="h-full overflow-hidden" :class="getMobileClass">
+    <div class="h-80 overflow-hidden" :class="getMobileClass">
       <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
         <Sider />
         <NLayoutContent class="h-full">
@@ -47,6 +47,12 @@ const getContainerClass = computed(() => {
           </RouterView>
         </NLayoutContent>
       </NLayout>
+    </div>
+    <div class="footer-b-copy">
+      <a href="https://beian.miit.gov.cn" target="_blank"> 豫ICP备2022010979号-1 </a>
+      <img src="@/assets/beian.png" style="width:18px;height:18px;vertical-align: middle;">
+      <a target="_blank" rel="nofollow noreferrer" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402005563">粤公网安备 44030402005563号</a> 2022 - 2023 EASYOCR.CN ALL RIGHT  RESERVED
+      <!-- <a target="_blank" rel="nofollow noreferrer" href=" ">粤公网安备 44030402005563号 </a> 2022 - 2023 EASYOCR.CN ALL RIGHT  RESERVED -->
     </div>
     <Permission :visible="needPermission" />
   </div>
