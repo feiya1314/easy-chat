@@ -480,6 +480,7 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col w-full h-full">
+    <!-- 如果是小屏设备，使用顶部配置栏 -->
     <HeaderComponent
       v-if="isMobile"
       :using-context="usingContext"

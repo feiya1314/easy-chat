@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { NLayout, NLayoutContent } from 'naive-ui'
 import { useRouter } from 'vue-router'
+import Beian from '../components/Beian/index.vue'
 import Sider from './sider/index.vue'
 import Permission from './Permission.vue'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
@@ -25,7 +26,7 @@ const needPermission = computed(() => !!authStore.session?.auth && !authStore.to
 const getMobileClass = computed(() => {
   if (isMobile.value)
     return ['rounded-none', 'shadow-none']
-  return ['border', 'rounded-md', 'shadow-md', 'dark:border-neutral-800']
+  return ['border', 'rounded-md', 'shadow-sm', 'dark:border-neutral-800']
 })
 
 const getContainerClass = computed(() => {
@@ -37,23 +38,20 @@ const getContainerClass = computed(() => {
 </script>
 
 <template>
-  <div class="h-full dark:bg-[#24272e] transition-all" :class="[isMobile ? 'p-0' : 'p-4']">
-    <div class="h-80 overflow-hidden" :class="getMobileClass">
-      <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
-        <Sider />
-        <NLayoutContent class="h-full">
-          <RouterView v-slot="{ Component, route }">
-            <component :is="Component" :key="route.fullPath" />
-          </RouterView>
-        </NLayoutContent>
-      </NLayout>
+  <div class="h-full flex flex-col">
+    <div class="h-full dark:bg-[rgb(36,39,46)] transition-all flex flex-col" :class="[isMobile ? 'p-0' : 'p-4']">
+      <div class="h-full overflow-hidden" :class="getMobileClass">
+        <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
+          <Sider />
+          <NLayoutContent class="h-full">
+            <RouterView v-slot="{ Component, route }">
+              <component :is="Component" :key="route.fullPath" />
+            </RouterView>
+          </NLayoutContent>
+        </NLayout>
+      </div>
+      <Permission :visible="needPermission" />
     </div>
-    <div class="footer-b-copy">
-      <a href="https://beian.miit.gov.cn" target="_blank"> 豫ICP备2022010979号-1 </a>
-      <img src="@/assets/beian.png" style="width:18px;height:18px;vertical-align: middle;">
-      <a target="_blank" rel="nofollow noreferrer" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402005563">粤公网安备 44030402005563号</a> 2022 - 2023 EASYOCR.CN ALL RIGHT  RESERVED
-      <!-- <a target="_blank" rel="nofollow noreferrer" href=" ">粤公网安备 44030402005563号 </a> 2022 - 2023 EASYOCR.CN ALL RIGHT  RESERVED -->
-    </div>
-    <Permission :visible="needPermission" />
   </div>
+  <Beian v-if="!isMobile" class="mt-[20px]" />
 </template>
