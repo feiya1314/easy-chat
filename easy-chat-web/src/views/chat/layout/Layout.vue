@@ -38,12 +38,12 @@ const getContainerClass = computed(() => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
-    <div class="h-full dark:bg-[rgb(36,39,46)] transition-all flex flex-col" :class="[isMobile ? 'p-0' : 'p-4']">
-      <div class="h-full overflow-hidden" :class="getMobileClass">
+  <div class="h-[calc(100vh-100px)] flex flex-col">
+    <div class="h-[calc(100vh-100px)] dark:bg-[rgb(36,39,46)] transition-all flex flex-col" :class="[isMobile ? 'p-0' : 'p-4']">
+      <div class="h-[calc(100vh-100px)] overflow-hidden" :class="getMobileClass">
         <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
           <Sider />
-          <NLayoutContent class="h-full">
+          <NLayoutContent class="h-[calc(100vh-140px)]">
             <RouterView v-slot="{ Component, route }">
               <component :is="Component" :key="route.fullPath" />
             </RouterView>
@@ -53,5 +53,5 @@ const getContainerClass = computed(() => {
       <Permission :visible="needPermission" />
     </div>
   </div>
-  <Beian v-if="!isMobile" class="mt-[20px]" />
+  <Beian v-if="!isMobile" class="h-[100px] max-h-[100px]" />
 </template>

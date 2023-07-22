@@ -6,7 +6,7 @@ import { ChevronDown20Regular as ArrowD } from '@vicons/fluent'
 </script>
 
 <template>
-  <footer class="mt-0 dark:bg-[#101014] rounded-md shadow-sm  dark:border-neutral-800 dark:text-gray-300 border h-[100px] max-h-[100px] flex flex-col relative">
+  <footer class="mt-0 dark:bg-[#101014] rounded-md shadow-sm  dark:border-neutral-800 dark:text-gray-300 border flex flex-col relative">
     <div class="z-10 w-[46px] h-[20px] rounded-t-lg bg-[#fcfcfc] border border-b-0 flex justify-center items-center dark:border-gray-700 dark:bg-[#48484E] absolute left-1/2 cursor-pointer -top-[19px]">
       <i class="relative w-6 h-6 inline-block text-center">
         <ArrowD />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NConfigProvider } from 'naive-ui'
+// import Beian from './views/chat/components/Beian/index.vue'
 import { NaiveProvider } from '@/components/common'
 import { useTheme } from '@/hooks/useTheme'
 import { useLanguage } from '@/hooks/useLanguage'
@@ -12,7 +13,7 @@ const { language } = useLanguage()
 
 <template>
   <NConfigProvider
-    class="h-full"
+    class="h-[calc(100vh-100px)]"
     :theme="theme"
     :theme-overrides="themeOverrides"
     :locale="language"
@@ -20,5 +21,6 @@ const { language } = useLanguage()
     <NaiveProvider>
       <RouterView />
     </NaiveProvider>
+    <!-- <Beian class="mt-[20px]" /> -->
   </NConfigProvider>
 </template>
