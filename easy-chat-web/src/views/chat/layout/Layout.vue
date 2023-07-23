@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { NLayout, NLayoutContent } from 'naive-ui'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 import Beian from '../components/Beian/index.vue'
 import Sider from './sider/index.vue'
 import Permission from './Permission.vue'
@@ -35,15 +36,32 @@ const getContainerClass = computed(() => {
     { 'pl-[260px]': !isMobile.value && !collapsed.value },
   ]
 })
+
+const adHeight = ref('h-[100px]')
+const showAdFooter = ref(true)
+const contentHeight = ref('h-[calc(100vh-100px)]')
+
+function adFooterHideOrShow() {
+  if (showAdFooter.value) {
+    adHeight.value = 'h-0'
+    showAdFooter.value = false
+    contentHeight.value = 'h-[calc(100vh-5px)]'
+    return
+  }
+
+  adHeight.value = 'h-[100px]'
+  showAdFooter.value = true
+  contentHeight.value = 'h-[calc(100vh-100px)]'
+}
 </script>
 
 <template>
-  <div class="h-[calc(100vh-100px)] flex flex-col">
-    <div class="h-[calc(100vh-100px)] dark:bg-[rgb(36,39,46)] transition-all flex flex-col" :class="[isMobile ? 'p-0' : 'p-4']">
-      <div class="h-[calc(100vh-100px)] overflow-hidden" :class="getMobileClass">
+  <div class="flex flex-col" :class="contentHeight">
+    <div class="h-full dark:bg-[rgb(36,39,46)] transition-all flex flex-col" :class="[isMobile ? 'p-0' : 'p-4']">
+      <div class="h-full overflow-hidden" :class="getMobileClass">
         <NLayout class="z-40 transition" :class="getContainerClass" has-sider>
           <Sider />
-          <NLayoutContent class="h-[calc(100vh-140px)]">
+          <NLayoutContent class="h-full">
             <RouterView v-slot="{ Component, route }">
               <component :is="Component" :key="route.fullPath" />
             </RouterView>
@@ -53,5 +71,5 @@ const getContainerClass = computed(() => {
       <Permission :visible="needPermission" />
     </div>
   </div>
-  <Beian v-if="!isMobile" class="h-[100px] max-h-[100px]" />
+  <Beian v-if="!isMobile" :class="adHeight" @click="adFooterHideOrShow" />
 </template>
