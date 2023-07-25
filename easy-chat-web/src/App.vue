@@ -11,11 +11,7 @@ const { language } = useLanguage()
 </script>
 
 <template>
-  <NConfigProvider
-    :theme="theme"
-    :theme-overrides="themeOverrides"
-    :locale="language"
-  >
+  <NConfigProvider :theme="theme" :theme-overrides="themeOverrides" :locale="language" class="overflow-hidden">
     <NaiveProvider>
       <RouterView />
     </NaiveProvider>
