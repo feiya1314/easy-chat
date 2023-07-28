@@ -20,7 +20,7 @@ function adFooterHideOrShow() {
 </script>
 
 <template>
-  <footer class="transition-transform mt-0 dark:bg-[#101014] rounded-md shadow-sm dark:border-neutral-800 dark:text-gray-300 border flex flex-col relative ml-4 mr-4">
+  <footer class="beain mt-0 dark:bg-[#101014] rounded-md shadow-sm dark:border-neutral-800 dark:text-gray-300 border flex flex-col relative ml-4 mr-4">
     <div class="z-10 w-[46px] h-[20px] rounded-t-lg bg-[#fcfcfc] border border-b-0 flex justify-center items-center dark:border-gray-700 dark:bg-[#48484E] absolute left-1/2 cursor-pointer -top-[19px]" @click="adFooterHideOrShow">
       <i class="relative w-6 h-6 inline-block text-center transition-transform" :class="getrotateClass">
         <ArrowD />
@@ -41,9 +41,8 @@ function adFooterHideOrShow() {
 </template>
 
 <!-- <style scoped>
-.ad-footer::after {
-  content: '';
-  clear: both;
-  display: block;
+.beain {
+  transition: color .3s cubic-bezier(0.4, 0, 0.2, 1), border-color .3s cubic-bezier(0.4, 0, 0.2, 1),
+  height .8s cubic-bezier(0.4, 0, 0.2, 1), min-height .8s cubic-bezier(0.4, 0, 0.2, 1), max-height .8s cubic-bezier(0.4, 0, 0.2, 1), transform .3s cubic-bezier(0.4, 0, 0.2, 1), background-color .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style> -->
