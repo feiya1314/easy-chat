@@ -187,7 +187,7 @@
         console.log('code:' + wxCode)
         logger.info("callCodeToSession wxCode", wxCode, loginKey.value)
         uni.request({
-            url: reqPrefix + '/code2session',
+            url: reqPrefix + '/code2Session',
             method: 'GET',
             dataType: 'json',
             data: {
