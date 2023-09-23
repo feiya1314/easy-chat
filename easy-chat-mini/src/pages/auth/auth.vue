@@ -1,16 +1,17 @@
 <template>
+    <!-- <view class="w-screen h-screen flex flex-col bg-[#F3C1A0]"> -->
     <view class="w-screen h-screen flex flex-col">
         <view class="flex items-center pt-8 pl-4">
             <image class="h-6 w-6 p-2" src="/static/logo.png" />
             <text class="font-bold text-lg"> 易识</text>
             <text v-if="uid == ''" class="p-2 text-base font-bold"> 申请使用</text>
-            <text v-if="uid != ''" class="p-2 text-base font-bold"> 登录成功, uid: {{uid}}</text>
         </view>
         <!--   <view class="pt-4 pl-4">
             <text class="p-2 font-bold text-xl"> 获取您的昵称、头像</text>
         </view> -->
         <view class="pt-4 pl-4">
-            <text class="p-2 font-bold text-xl"> 使用微信登录</text>
+            <text v-if="uid == ''" class="p-2 font-bold text-xl"> 使用微信登录</text>
+            <text v-if="uid != ''" class="p-2 font-bold text-xl"> 登录成功, uid: {{uid}}</text>
         </view>
         <!-- <view class=" mt-4 ml-4 mr-4 h-12 flex border border-slate-100 rounded-lg items-center">
             <view class="pl-2">
@@ -20,7 +21,7 @@
             </view>
             <input type="nickname" class="weui-input pl-4" :value="nickName" @blur="bindblur" placeholder="请输入昵称" @input="bindinput" />
         </view> -->
-        <view class="pt-40 pl-4 pr-4">
+        <view v-if="uid == ''" class="pt-40 pl-4 pr-4">
             <button v-if="authStatus == 'scaned'" class="p-2 text-xl" type="primary" @click="login">允许使用</button>
             <button v-if="authStatus == 'notScan'" class="p-2 text-xl" type="primary" @click="scanQr">扫码登录</button>
         </view>
@@ -89,7 +90,7 @@
                 let path = decodeURIComponent(res.path)
                 let tempKeyStrs = path.split('=')
                 if (path.indexOf("scene=tempKey") >= 0) {
-                    if (tempKeyStrs.length < 3 || tempKeyStrs[2] != 'tempKey') {
+                    if (tempKeyStrs.length < 3 || tempKeyStrs[1] != 'tempKey') {
                         uni.showToast({
                             title: '二维码不正确',
                             icon: 'error'
@@ -98,7 +99,7 @@
                     }
                     loginKey.value = tempKeyStrs[2]
                 } else {
-                    if (tempKeyStrs.length < 2 || tempKeyStrs[1] != 'scene') {
+                    if (tempKeyStrs.length < 2 || !tempKeyStrs[0].endsWith('scene')) {
                         uni.showToast({
                             title: '二维码不正确',
                             icon: 'error'
