@@ -28,20 +28,32 @@ function http<T = any>(
 ) {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
     const authStore = useAuthStore()
-
-    if (res.data.status === 'Success' || typeof res.data === 'string')
+    if (res.status === 200)
       return res.data
 
-    if (res.data.status === 'Unauthorized') {
+    if (res.status === 401) {
       authStore.removeToken()
       window.location.reload()
     }
+    // if (res.data.status === 'Success' || typeof res.data === 'string')
+    //   return res.data
+
+    // if (res.data.status === 'Unauthorized') {
+    //   authStore.removeToken()
+    //   window.location.reload()
+    // }
 
     return Promise.reject(res.data)
   }
 
   const failHandler = (error: Response<Error>) => {
     afterRequest?.()
+    if (error.response.status === 401) {
+      useAuthStore().removeToken()
+      window.location.reload()
+      return
+    }
+
     throw new Error(error?.message || 'Error', { cause: error?.response })
   }
 

@@ -6,8 +6,8 @@ export function getToken() {
   return ss.get(LOCAL_NAME)
 }
 
-export function setToken(token: string) {
-  return ss.set(LOCAL_NAME, token)
+export function setToken(token: string, expire: number) {
+  return ss.set(LOCAL_NAME, token, expire)
 }
 
 export function removeToken() {

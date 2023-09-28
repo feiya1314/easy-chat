@@ -17,6 +17,7 @@ function getDefaultSession(): SessionResponse {
 
 export interface AuthState {
   token: string | undefined
+  expire: number | null
   session: SessionResponse | null
 }
 
@@ -24,7 +25,8 @@ export const useAuthStore = defineStore('auth-store', {
   state: (): AuthState => ({
     // token: getToken(),
     // 这里默认通过，给个默认值
-    token: 'pass',
+    token: getToken(),
+    expire: 60 * 60 * 24 * 1,
     // 这里先使用默认session，默认通过，不校验session
     session: getDefaultSession(),
   }),
@@ -48,9 +50,10 @@ export const useAuthStore = defineStore('auth-store', {
       }
     },
 
-    setToken(token: string) {
+    setToken(token: string, expire: number) {
       this.token = token
-      setToken(token)
+      this.expire = expire
+      setToken(token, expire)
     },
 
     removeToken() {

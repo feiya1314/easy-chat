@@ -45,11 +45,18 @@ export default defineConfig((env) => {
       // 提供和服务这些静态文件。在生产模式下，Vite 的代理配置不会生效，因为代理是开发服务器的功能。
       // 开发模式下，浏览器请求，首先到达 Vue CLI 的开发服务器，然后由开发服务器代理转发请求
       proxy: {
-        '/api': {
+        '/api/v1': {
           target: viteEnv.VITE_APP_API_BASE_URL,
           changeOrigin: true, // 允许跨域
           // rewrite: path => path.replace('/api/', '/'),
           rewrite: path => path.replace('/api/', '/chat/api/'),
+        },
+        '/api/auth': {
+          target: viteEnv.VITE_APP_API_BASE_URL,
+          changeOrigin: true, // 允许跨域
+          // /api/auth/v1/wx/getQr -> /chat/auth/v1/wx/getQr
+          // rewrite: path => path.replace('/api/', '/'),
+          rewrite: path => path.replace('/api/auth/', '/chat/auth/'),
         },
       },
     },

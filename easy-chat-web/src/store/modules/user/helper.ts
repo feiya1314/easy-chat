@@ -7,6 +7,7 @@ export interface UserInfo {
   avatar: string
   name: string
   description: string
+  userId: number
 }
 
 export interface UserState {
@@ -20,6 +21,7 @@ export function defaultSetting(): UserState {
       avatar: avatarImg,
       name: 'user',
       description: '',
+      userId: 9527,
     },
   }
 }

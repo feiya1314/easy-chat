@@ -1,7 +1,8 @@
 import axios, { type AxiosResponse } from 'axios'
-import { useAuthStore } from '@/store'
+import { useAuthStore, useUserStore } from '@/store'
 
 const service = axios.create({
+  // api请求会带上该前缀
   baseURL: import.meta.env.VITE_GLOB_API_URL,
 })
 
@@ -9,7 +10,11 @@ service.interceptors.request.use(
   (config) => {
     const token = useAuthStore().token
     if (token)
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `${token}`
+
+    const userId = useUserStore().userInfo?.userId
+    if (userId)
+      config.headers.user_id = `${userId}`
     return config
   },
   (error) => {

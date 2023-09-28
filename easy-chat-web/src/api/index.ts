@@ -1,5 +1,5 @@
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios'
-import { post } from '@/utils/request'
+import { get, post } from '@/utils/request'
 import { useAuthStore, useSettingStore } from '@/store'
 
 export function fetchChatAPI<T = any>(
@@ -25,7 +25,8 @@ export function fetchChatAPIProcess<T = any>(
     prompt: string
     options?: { conversationId?: string; parentMessageId?: string }
     signal?: GenericAbortSignal
-    onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
+    onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
+  },
 ) {
   const settingStore = useSettingStore()
   const authStore = useAuthStore()
@@ -48,6 +49,28 @@ export function fetchChatAPIProcess<T = any>(
     url: '/v1/chat-process',
     data,
     signal: params.signal,
+    onDownloadProgress: params.onDownloadProgress,
+  })
+}
+
+export function getWxLoginStatus<T = any>(
+  params: {
+    tempKey: string
+    onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
+  },
+) {
+  const reqUrl = `/auth/v1/wx/loginStatus?tempKey=${params.tempKey}`
+  return get<T>({
+    url: reqUrl,
+    onDownloadProgress: params.onDownloadProgress,
+  })
+}
+
+export function getWxQr<T = any>(
+  params: { onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
+) {
+  return get<T>({
+    url: '/auth/v1/wx/getQr',
     onDownloadProgress: params.onDownloadProgress,
   })
 }

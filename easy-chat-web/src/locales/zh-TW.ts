@@ -24,8 +24,8 @@ export default {
     wrong: '發生錯誤，請稍後再試。',
     success: '操作成功',
     failed: '操作失敗',
-    verify: '驗證',
-    unauthorizedTips: '未經授權，請先進行驗證。',
+    verify: '登錄',
+    unauthorizedTips: '請點擊登錄,用微信掃碼登錄',
   },
   chat: {
     newChatButton: '新增對話',

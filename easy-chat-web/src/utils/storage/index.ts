@@ -8,10 +8,10 @@ export function createLocalStorage(options?: { expire?: number | null }) {
 
   const { expire } = Object.assign({ expire: DEFAULT_CACHE_TIME }, options)
 
-  function set<T = any>(key: string, data: T) {
+  function set<T = any>(key: string, data: T, expireInput?: number | null) {
     const storageData: StorageData<T> = {
       data,
-      expire: expire !== null ? new Date().getTime() + expire * 1000 : null,
+      expire: (expireInput !== undefined && expireInput !== null) ? expireInput : (expire !== null ? new Date().getTime() + expire * 1000 : null),
     }
 
     const json = JSON.stringify(storageData)
@@ -54,4 +54,5 @@ export function createLocalStorage(options?: { expire?: number | null }) {
 
 export const ls = createLocalStorage()
 
-export const ss = createLocalStorage({ expire: null })
+// export const ss = createLocalStorage({ expire: null })
+export const ss = createLocalStorage()
