@@ -12,7 +12,7 @@ import { useUsingContext } from './hooks/useUsingContext'
 import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
-import { useChatStore, usePromptStore } from '@/store'
+import { useAuthStore, useChatStore, usePromptStore } from '@/store'
 import { fetchChatAPIProcess } from '@/api'
 import { t } from '@/locales'
 
@@ -21,6 +21,8 @@ let controller = new AbortController()
 const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
 
 const route = useRoute()
+const authStore = useAuthStore()
+const needPermission = computed(() => !!authStore.session?.auth && !authStore.token)
 
 // 使用 native ui 的对话框 和提示弹出消息
 const dialog = useDialog()
@@ -36,7 +38,7 @@ const { usingContext, toggleUsingContext } = useUsingContext()
 const { uuid } = route.params as { uuid: string }
 
 // 从localstorage 的chat 对话信息中，找到uuid下的对话列表
-const dataSources = computed(() => chatStore.getChatByUuid(+uuid))
+const dataSources = computed(() => needPermission.value ? [] : chatStore.getChatByUuid(+uuid))
 
 // 找到 ai 回答的消息列表 inversion为fasle 且conversationOptions不为空
 const conversationList = computed(() => dataSources.value.filter(item => (!item.inversion && !!item.conversationOptions)))

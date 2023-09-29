@@ -75,9 +75,25 @@ export const useChatStore = defineStore('chat-store', {
       }
     },
 
+    reInit(userId: number) {
+      const uuid = Date.now()
+      this.active = uuid
+      this.userId = userId
+      this.history = [{ uuid, title: 'New Chat', isEdit: false }]
+      this.usingContext = true
+      this.chat = [{ uuid, data: [] }]
+
+      this.recordState()
+    },
+
     async setActive(uuid: number) {
       this.active = uuid
       return await this.reloadRoute(uuid)
+    },
+
+    setUserId(userId: number) {
+      this.userId = userId
+      // return await this.reloadRoute(this.active)
     },
 
     getChatByUuidAndIndex(uuid: number, index: number) {

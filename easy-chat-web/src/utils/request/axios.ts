@@ -14,7 +14,7 @@ service.interceptors.request.use(
 
     const userId = useUserStore().userInfo?.userId
     if (userId)
-      config.headers.user_id = `${userId}`
+      config.headers.userId = `${userId}`
     return config
   },
   (error) => {

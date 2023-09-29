@@ -17,6 +17,7 @@ declare namespace Chat {
 	}
 
 	interface ChatState {
+		userId: number
 		active: number | null
 		usingContext: boolean;
 		history: History[]

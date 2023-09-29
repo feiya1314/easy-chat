@@ -107,7 +107,7 @@ async function wxLoginStatus() {
             authStore.setToken(data.token, data.tokenExpiredTime)
             userStore.updateUserInfo({ userId: data.userId, name: data.username })
 
-            chatStore.setActive(data.userId)
+            processChats(data.userId)
             // userStore.userInfo.avatar = data.avatarUrl
             ms.success('登录成功')
             clearInterval(intervalId)
@@ -130,6 +130,22 @@ async function wxLoginStatus() {
 
     clearInterval(intervalId)
   }, 60000)
+}
+
+// 登录成功，1、当前的localstorage中历史chat 没有userid，则把当前的userId写入当前的历史
+// 2、如果有历史userId，且不一样，则清空localstorage，重新初始化chat
+// 3、如果有历史userId，且一样，则使用该历史chat
+function processChats(userId: number) {
+  if ((!chatStore.userId) || chatStore.userId === -1) {
+    chatStore.setUserId(userId)
+    chatStore.setActive(chatStore.active == null ? -1 : chatStore.active)
+    return
+  }
+
+  if (chatStore.userId !== userId)
+    chatStore.reInit(userId)
+
+  // chatStore.setActive(dd)
 }
 // async function handleGptLogin() {
 //   const secretKey = token.value.trim()
