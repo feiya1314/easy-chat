@@ -10,7 +10,7 @@
             <text class="p-2 font-bold text-xl"> 获取您的昵称、头像</text>
         </view> -->
         <view class="pt-4 pl-4">
-            <text v-if="uid == ''" class="p-2 font-bold text-xl"> 使用微信登录</text>
+            <text v-if="uid == ''" class="p-2 font-bold text-xl"> 使用微信扫码</text>
             <text v-if="uid != ''" class="p-2 font-bold text-xl"> 登录成功, uid: {{uid}}</text>
         </view>
         <!-- <view class=" mt-4 ml-4 mr-4 h-12 flex border border-slate-100 rounded-lg items-center">
@@ -22,8 +22,8 @@
             <input type="nickname" class="weui-input pl-4" :value="nickName" @blur="bindblur" placeholder="请输入昵称" @input="bindinput" />
         </view> -->
         <view v-if="uid == ''" class="pt-40 pl-4 pr-4">
-            <button v-if="authStatus == 'scaned'" class="p-2 text-xl" type="primary" @click="login">允许使用</button>
-            <button v-if="authStatus == 'notScan'" class="p-2 text-xl" type="primary" @click="scanQr">扫码登录</button>
+            <button v-if="authStatus == 'scaned'" class="p-2 text-xl" type="primary" @click="askLogin">允许使用</button>
+            <button v-if="authStatus == 'notScan'" class="p-2 text-xl" type="primary" @click="scanQr">点击扫码</button>
         </view>
     </view>
 </template>
@@ -37,13 +37,13 @@
     const loginKey = ref('')
     const uid = ref('')
     const token = ref('')
-    let reqPrefix = 'https://test.easyocr.cn/chat/auth/v1/wx'
+    let reqPrefix = 'https://chat.easyocr.cn/chat/auth/v1/wx'
 
     // 扫码进入时，获取scene
     onLoad((options : any) => {
         console.log("onload : " + options)
         logger.info("onload : ", options)
-        if (options.scene) {
+        if (checkLogin() && options.scene) {
             var scene = decodeURIComponent(options.scene)
             console.log("scene : " + scene)
             logger.info("scene : ", scene)
@@ -78,6 +78,23 @@
         authStatus.value = 'notScan'
     })
 
+    const checkLogin = () => {
+        let res = uni.getStorageSync('loginInfo')
+        if (!res || !res.userId || !res.token) {
+            console.log('not login yet ')
+            return false
+        }
+
+        const timestamp: number = Date.parse(new Date().toString());
+        if(res.tokenExpiredTime <timestamp){
+            console.log("token expired")
+            return false
+        }
+        uid.value = res.userId
+        token.value = res.token
+
+        return true
+    }
     const scanQr = () => {
         uni.scanCode({
             // scanType: ['qrCode'],
@@ -120,6 +137,23 @@
         });
     }
 
+    const askLogin = () => {
+        uni.showModal({
+            content: '请确认登录',
+            confirmText: '确定',
+            cancelText: '取消',
+            success: function (res) {
+                if (res.confirm) {
+                    console.log('用户点击确定')
+                    login()
+                } else if (res.cancel) {
+                    console.log('用户点击取消')
+                    updateLoginStatus('REFUSE')
+                }
+            }
+        });
+
+    }
     const login = () => {
         console.log("start login")
         logger.info("start login ", loginKey.value)
@@ -217,6 +251,13 @@
 
                 uid.value = res.data.userId
                 token.value = res.data.token
+                uni.setStorage({
+                    key: 'loginInfo',
+                    data: res.data,
+                    success: (res) => {
+                        console.log('save login info success ' + res)
+                    }
+                })
             },
             fail: (e) => {
                 console.log(e)
