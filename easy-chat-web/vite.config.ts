@@ -38,7 +38,7 @@ export default defineConfig((env) => {
     plugins: setupPlugins(viteEnv),
     server: {
       host: '0.0.0.0',
-      port: 1002,
+      port: 30002,
       open: false,
       // 反向代理配置，只在开发模式有效(pnpm dev)，请求会对 /api开头的请求路径进行代理，转发到 target 地址,解决跨域请求的问题
       // build后，部署到生产模式下,Vite 不会提供开发服务器，而是将应用程序打包成静态文件，并由生产服务器（如 Nginx）

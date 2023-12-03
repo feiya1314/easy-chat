@@ -19,5 +19,5 @@ export function getLocalState(): Chat.ChatState {
 }
 
 export function setLocalState(state: Chat.ChatState) {
-  ss.set(LOCAL_NAME, state)
+  ss.set(LOCAL_NAME, state, null)
 }
