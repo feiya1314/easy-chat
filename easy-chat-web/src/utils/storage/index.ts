@@ -32,7 +32,7 @@ export function createLocalStorage(options?: { expire?: number | null }) {
 
       if (storageData) {
         const { data, expire } = storageData
-        if (expire === null || expire >= Date.now())
+        if (expire === null || expire >= Date.now() || expire <= 0)
           return data
       }
 
